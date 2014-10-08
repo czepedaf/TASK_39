@@ -156,6 +156,7 @@ SiStripMonitorCluster::SiStripMonitorCluster(const edm::ParameterSet& iConfig)
   minPix = ClusterMultiplicityRegions.getParameter<double>("MinPix");
 
   clustertkhistomapon = conf_.getParameter<bool>("TkHistoMap_On");
+  clustertkhistomapoff = conf_.getParameter<bool>("TkHistoMap_Off");
   createTrendMEs = conf_.getParameter<bool>("CreateTrendMEs");
   Mod_On_ = conf_.getParameter<bool>("Mod_On");
   ClusterHisto_ = conf_.getParameter<bool>("ClusterHisto");
@@ -243,6 +244,12 @@ void SiStripMonitorCluster::createMEs(const edm::EventSetup& es , DQMStore::IBoo
       if ( (topFolderName_ == "SiStrip") or (std::string::npos != topFolderName_.find("HLT")) )
 	tkmapcluster = new TkHistoMap(ibooker , topFolderName_,"TkHMap_NumberOfCluster",0.,true);
       else tkmapcluster = new TkHistoMap(ibooker , topFolderName_+"/TkHistoMap","TkHMap_NumberOfCluster",0.,false);
+    }
+ if (clustertkhistomapoff) {
+      //      std::cout << "[SiStripMonitorCluster::createMEs] topFolderName_: " << topFolderName_ << "     ";
+      if ( (topFolderName_ == "SiStrip") or (std::string::npos != topFolderName_.find("HLT")) )
+	tkmapcluster = new TkHistoMap(ibooker , topFolderName_,"TkHMap_AvarageChargeCluster",0.,true);
+      else tkmapcluster = new TkHistoMap(ibooker , topFolderName_+"/TkHistoMap","TkHMap_AvarageChargeCluster",0.,false);
     }
 
     // loop over detectors and book MEs
@@ -564,6 +571,7 @@ void SiStripMonitorCluster::analyze(const edm::Event& iEvent, const edm::EventSe
 	  (mod_single.NumberOfClusters)->Fill(0.); // no clusters for this detector module,fill histogram with 0
 	}
 	if(clustertkhistomapon) tkmapcluster->fill(detid,0.);
+	if(clustertkhistomapoff) tkmapcluster->fill(detid,0.);
 	if (found_layer_me && layerswitchnumclusterprofon) layer_single.LayerNumberOfClusterProfile->Fill(iDet, 0.0);
 	continue; // no clusters for this detid => jump to next step of loop
       }
@@ -575,7 +583,9 @@ void SiStripMonitorCluster::analyze(const edm::Event& iEvent, const edm::EventSe
       if(clustertkhistomapon) {
 	tkmapcluster->fill(detid,static_cast<float>(cluster_detset.size()));
       }
-
+      if(clustertkhistomapoff) {
+	tkmapcluster->fill(detid,static_cast<float>(cluster_detset.size()));
+      }
       if(moduleswitchncluson && found_module_me && (mod_single.NumberOfClusters != NULL)){ // nr. of clusters per module
 	(mod_single.NumberOfClusters)->Fill(static_cast<float>(cluster_detset.size()));
       }
