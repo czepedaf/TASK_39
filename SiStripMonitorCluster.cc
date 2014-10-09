@@ -584,7 +584,7 @@ void SiStripMonitorCluster::analyze(const edm::Event& iEvent, const edm::EventSe
 	tkmapcluster->fill(detid,static_cast<float>(cluster_detset.size()));
       }
       if(clustertkhistomapoff) {
-	tkmapcluster->fill(detid,static_cast<float>(cluster_detset.size()));
+	tkmapcluster->fill(detid,static_cast<float>(layerswitchcluschargeon));
       }
       if(moduleswitchncluson && found_module_me && (mod_single.NumberOfClusters != NULL)){ // nr. of clusters per module
 	(mod_single.NumberOfClusters)->Fill(static_cast<float>(cluster_detset.size()));
