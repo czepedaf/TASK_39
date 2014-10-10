@@ -155,6 +155,7 @@ void SiStripMonitorTrack::book(DQMStore::IBooker & ibooker , const TrackerTopolo
     tkhisto_NumOnTrack      = new TkHistoMap(ibooker , topFolderName_, "TkHMap_NumberOfOnTrackCluster",  0.0,true);
     tkhisto_NumOffTrack     = new TkHistoMap(ibooker , topFolderName_, "TkHMap_NumberOfOfffTrackCluster",0.0,true);
     tkhisto_OffTrackClusterCharge     = new TkHistoMap(ibooker , topFolderName_, "TkHMap_OffTrackClusterCharge",0.0,true);
+    tkhisto_ONTrackClusterCharge     = new TkHistoMap(ibooker , topFolderName_, "TkHMap_ONTrackClusterCharge",0.0,true);
   }
   //******** TkHistoMaps
 
@@ -694,6 +695,7 @@ bool SiStripMonitorTrack::clusterInfos(SiStripClusterInfo* cluster, const uint32
       if(noise > 0.0) tkhisto_StoNCorrOnTrack->fill(adet,cluster->signalOverNoise()*cosRZ);
       if(noise == 0.0)
 	LogDebug("SiStripMonitorTrack") << "Module " << detid << " in Event " << eventNb << " noise " << noise << std::endl;
+      tkhisto_ONTrackClusterCharge->fill(adet,cluster->charge())
     }
     else if(flag==OffTrack){
       tkhisto_NumOffTrack->add(adet,1.);
