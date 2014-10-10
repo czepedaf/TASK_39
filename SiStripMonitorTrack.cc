@@ -695,7 +695,7 @@ bool SiStripMonitorTrack::clusterInfos(SiStripClusterInfo* cluster, const uint32
       if(noise > 0.0) tkhisto_StoNCorrOnTrack->fill(adet,cluster->signalOverNoise()*cosRZ);
       if(noise == 0.0)
 	LogDebug("SiStripMonitorTrack") << "Module " << detid << " in Event " << eventNb << " noise " << noise << std::endl;
-      tkhisto_ONTrackClusterCharge->fill(adet,cluster->charge())
+      tkhisto_ONTrackClusterCharge->fill(adet,cluster->charge());
     }
     else if(flag==OffTrack){
       tkhisto_NumOffTrack->add(adet,1.);
