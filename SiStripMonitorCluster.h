@@ -143,7 +143,7 @@ class SiStripMonitorCluster : public thread_unsafe::DQMEDAnalyzer {
   edm::ParameterSet Parameters;
 
   // TkHistoMap added
-  TkHistoMap* tkmapcluster, tkmapaveragechargecluster; 
+  TkHistoMap *tkmapcluster, *tkmapaveragechargecluster; 
 
   int runNb, eventNb;
   int firstEvent;
